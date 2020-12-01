@@ -1,0 +1,5 @@
+rootProject.name = 'spring-logging-demo'
+include(
+        ":resource-service-first",
+        ":resource-service-second"
+)
