@@ -1,2 +1,8 @@
 server:
   port: 7070
+
+logging:
+  level:
+    org.springframework.web:
+      servlet.DispatcherServlet: DEBUG
+
