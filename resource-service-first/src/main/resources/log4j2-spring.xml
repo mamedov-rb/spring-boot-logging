@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="app-name" value="resource-service-first"/>
+        <Property name="file.location" value="./logs"/>
+        <Property name="console.thresholdFilter">ALL</Property>
+        <Property name="file.thresholdFilter">ALL</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <ThresholdFilter level="${console.thresholdFilter}"/>
+            <PatternLayout pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable" />
+        </Console>
+        <RollingRandomAccessFile name="FILE" fileName="${file.location}/${app-name}.log" filePattern="${file.location}/${app-name}-$${date:yyyy-MM-dd}/${app-name}-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="${file.thresholdFilter}"/>
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="2MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+        <Async name="ASYNC-FILE">
+            <AppenderRef ref="FILE"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="ASYNC-FILE"/>
+        </Root>
+        <Logger name="com.example.resourceservice" level="info" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="ASYNC-FILE"/>
+        </Logger>
+    </Loggers>
+</Configuration>

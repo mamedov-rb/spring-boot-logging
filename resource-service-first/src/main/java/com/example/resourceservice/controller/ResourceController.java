@@ -1,7 +1,7 @@
 package com.example.resourceservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
 
-@Slf4j
+@Log4j2
 @RestController
 @RequestMapping("/resource")
 @RequiredArgsConstructor
