@@ -3,7 +3,10 @@
     <Properties>
         <Property name="app-name" value="resource-service-first"/>
         <Property name="file.location" value="./logs"/>
+        <Property name="socket.host">localhost</Property>
+        <Property name="socket.port">5046</Property>
         <Property name="console.thresholdFilter">ALL</Property>
+        <Property name="socket.thresholdFilter">ALL</Property>
         <Property name="file.thresholdFilter">ALL</Property>
     </Properties>
 
@@ -12,6 +15,10 @@
             <ThresholdFilter level="${console.thresholdFilter}"/>
             <PatternLayout pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable" />
         </Console>
+        <Socket name="SOCKET" host="${socket.host}" port="${socket.port}" immediateFlush="true">
+            <ThresholdFilter level="${socket.thresholdFilter}"/>
+            <JSONLayout eventEol="true" compact="true"/>
+        </Socket>
         <RollingRandomAccessFile name="FILE" fileName="${file.location}/${app-name}.log" filePattern="${file.location}/${app-name}-$${date:yyyy-MM-dd}/${app-name}-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="${file.thresholdFilter}"/>
             <PatternLayout>
@@ -26,15 +33,20 @@
         <Async name="ASYNC-FILE">
             <AppenderRef ref="FILE"/>
         </Async>
+        <Async name="ASYNC-SOCKET">
+            <AppenderRef ref="SOCKET"/>
+        </Async>
     </Appenders>
 
     <Loggers>
         <Root level="info">
             <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="ASYNC-SOCKET"/>
             <AppenderRef ref="ASYNC-FILE"/>
         </Root>
         <Logger name="com.example.resourceservice" level="info" additivity="false">
             <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="ASYNC-SOCKET"/>
             <AppenderRef ref="ASYNC-FILE"/>
         </Logger>
     </Loggers>
