@@ -2,7 +2,7 @@
 <Configuration>
     <Properties>
         <Property name="app-name" value="resource-service-second"/>
-        <Property name="file.location" value="./logs"/>
+        <Property name="file.location" value="../logs"/>
         <Property name="socket.host">localhost</Property>
         <Property name="socket.port">5046</Property>
         <Property name="console.thresholdFilter">ALL</Property>
@@ -13,11 +13,14 @@
     <Appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <ThresholdFilter level="${console.thresholdFilter}"/>
-            <PatternLayout pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable" />
+            <PatternLayout pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg %notEmpty{correlationId=%X{x-correlation-id}} %n%throwable" />
         </Console>
         <Socket name="SOCKET" host="${socket.host}" port="${socket.port}" immediateFlush="true">
             <ThresholdFilter level="${socket.thresholdFilter}"/>
-            <JSONLayout eventEol="true" compact="true"/>
+            <JSONLayout eventEol="true" compact="true">
+                <KeyValuePair key="correlationId" value="${ctx:x-correlation-id}"/>
+                <KeyValuePair key="application-name" value="${app-name}"/>
+            </JSONLayout>
         </Socket>
         <RollingRandomAccessFile name="FILE" fileName="${file.location}/${app-name}.log" filePattern="${file.location}/${app-name}-$${date:yyyy-MM-dd}/${app-name}-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="${file.thresholdFilter}"/>
@@ -41,9 +44,14 @@
     <Loggers>
         <Root level="info">
             <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="ASYNC-SOCKET" level="warn"/>
+            <AppenderRef ref="ASYNC-FILE" level="warn"/>
+        </Root>
+        <Logger name="org.springframework.web.servlet.DispatcherServlet" level="debug" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="ASYNC-SOCKET"/>
             <AppenderRef ref="ASYNC-FILE"/>
-        </Root>
+        </Logger>
         <Logger name="com.example.resourceservice" level="info" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="ASYNC-SOCKET"/>

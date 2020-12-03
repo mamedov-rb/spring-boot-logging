@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
-        <Property name="app-name" value="resource-service-first"/>
-        <Property name="file.location" value="../logs"/>
+        <Property name="app-name" value="gateway-service"/>
+        <Property name="file.location" value="./logs"/>
         <Property name="socket.host">localhost</Property>
         <Property name="socket.port">5046</Property>
         <Property name="console.thresholdFilter">ALL</Property>
@@ -52,7 +52,7 @@
             <AppenderRef ref="ASYNC-SOCKET"/>
             <AppenderRef ref="ASYNC-FILE"/>
         </Logger>
-        <Logger name="com.example.resourceservice" level="info" additivity="false">
+        <Logger name="com.example.gatewayservice" level="info" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="ASYNC-SOCKET"/>
             <AppenderRef ref="ASYNC-FILE"/>

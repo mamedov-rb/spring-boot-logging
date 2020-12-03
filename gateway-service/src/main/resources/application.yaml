@@ -1,0 +1,16 @@
+server:
+  port: 8762
+
+spring:
+  application.name: zuul-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: routes
+
+logging:
+  level:
+    org.springframework.web:
+      servlet.DispatcherServlet: DEBUG

@@ -18,7 +18,7 @@ import java.net.InetAddress;
 @RequiredArgsConstructor
 public class ResourceController {
 
-    private final static String URL = "http://localhost:7070/resource";
+    private final static String URL = "http://resource-service-second/resource";
     private final Environment environment;
     private final RestTemplate restTemplate;
 

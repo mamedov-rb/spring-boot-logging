@@ -1,6 +1,9 @@
 server:
   port: 8080
 
+spring:
+  application.name: resource-service-first
+
 logging:
   level:
     org.springframework.web:
