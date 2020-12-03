@@ -1,9 +1,3 @@
-server:
-  port: 7070
-
-spring:
-  application.name: resource-service-second
-
 logging:
   level:
     org.springframework.web:

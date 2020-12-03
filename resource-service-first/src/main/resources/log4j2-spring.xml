@@ -13,19 +13,21 @@
     <Appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <ThresholdFilter level="${console.thresholdFilter}"/>
-            <PatternLayout pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg %notEmpty{correlationId=%X{x-correlation-id}} %n%throwable" />
+            <PatternLayout pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: [${app-name},%X{traceId},%X{spanId},%X{spanExportable}]%msg%n%throwable" />
         </Console>
         <Socket name="SOCKET" host="${socket.host}" port="${socket.port}" immediateFlush="true">
             <ThresholdFilter level="${socket.thresholdFilter}"/>
             <JSONLayout eventEol="true" compact="true">
-                <KeyValuePair key="correlationId" value="${ctx:x-correlation-id}"/>
-                <KeyValuePair key="application-name" value="${app-name}"/>
+                <KeyValuePair key="app-name" value="${app-name}"/>
+                <KeyValuePair key="traceId" value="${ctx:traceId}"/>
+                <KeyValuePair key="spanId" value="${ctx:spanId}"/>
+                <KeyValuePair key="exportable" value="${ctx:spanExportable}"/>
             </JSONLayout>
         </Socket>
         <RollingRandomAccessFile name="FILE" fileName="${file.location}/${app-name}.log" filePattern="${file.location}/${app-name}-$${date:yyyy-MM-dd}/${app-name}-%d{yyyy-MM-dd}-%i.log">
             <ThresholdFilter level="${file.thresholdFilter}"/>
             <PatternLayout>
-                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+                <pattern>%d %p %C{1.} [%t] [${app-name},%X{traceId},%X{spanId},%X{spanExportable}] %m%n</pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
