@@ -3,3 +3,4 @@ logging:
     org.springframework.web:
       servlet.DispatcherServlet: DEBUG
 
+spring.sleuth.sampler.percentage: 1.0

@@ -36,5 +36,11 @@ services:
     depends_on:
       - logstash
 
+  zipkin:
+    image: openzipkin/zipkin-slim
+    container_name: zipkin
+    ports:
+      - 9411:9411
+
 networks:
   elk:

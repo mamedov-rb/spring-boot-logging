@@ -1,5 +1,6 @@
 package com.example.resourceservice.controller;
 
+import com.example.resourceservice.service.ResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
@@ -19,13 +20,16 @@ import java.net.InetAddress;
 public class ResourceController {
 
     private final static String URL = "http://resource-service-second/resource";
+
     private final Environment environment;
     private final RestTemplate restTemplate;
+    private final ResourceService resourceService;
 
     @GetMapping
-    public String info() {
+    public String info() throws InterruptedException {
         final String host = InetAddress.getLoopbackAddress().getHostAddress();
         final String port = environment.getProperty("server.port");
+        resourceService.someWork();
         final ResponseEntity<String> exchange =
                 restTemplate.exchange(URL, HttpMethod.GET, null, String.class);
         final String format = String.format(
@@ -37,5 +41,4 @@ public class ResourceController {
         log.info(format);
         return format;
     }
-
 }

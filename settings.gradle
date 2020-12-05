@@ -1,4 +1,4 @@
-rootProject.name = 'spring-logging-demo'
+rootProject.name = 'spring-boot-logging'
 include(
         ":resource-service-first",
         ":resource-service-second",
